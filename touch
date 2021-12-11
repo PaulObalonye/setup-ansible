@@ -1,0 +1,68 @@
+Steps to setup 4 node ansible setup
+
+# Setup this on the master node
+1- # Install epel 8
+install Epel 8 release yum install epel-release
+
+2- # Install ansible 2.8
+yum install ansible
+
+3- #check ansible version and config path
+ansible --version
+
+
+#Setup 4 nodes (Slave Server)- CentOS or Ubuntu
+webserver-1
+webserver-2
+dbserver-1
+dbserver-2
+
+#Steps to Configure ansible
+1-  Launch Managed/Slave/Mode Servers
+2-  Managed Nodes needs python 2 upward
+3-  Ansible will use SSH connection to managed nodes using passord-less authentication with SSH Keys
+4- Provide the IP address or FQDN of the managed nodes in the inventory file on Ansible master node/Engine
+5- Simple test the setting vy using    "ansible all -m ping" command
+
+
+
+# Create password-less authentication
+# create same users across all servers and use same password for all servers. ( both master nodes and managed nodes)
+useradd ansadmin
+passwd ansadmin
+
+# Provide ROOT privileges to ansadmin user on all servers
+ visudo 
+ansadmin        ALL=(ALL)       NOPASSWD:  ALL
+
+# Make sure password authentication YES is in all servers in /etc/ssh/sshd_config file
+type : vi /etc/ssh/sshd_confile
+# after password authentication YES
+#restart the sshd service
+service sshd restart
+
+
+# Generate SSH Keys using ssh-keygen command from ansadmin user
+# login to ansadmin 
+# Type.  ssh-keygen 
+
+#CD into the ssh folder
+type cd /etc/ssh
+
+# copy ssh public key using ssh-copy-id  <hostname> (of the managed nodes). from the /home/ansadmin/.ssh/location
+
+
+# Update inventory file on Ansible master node/Engine. with managed nodes ip addresses.
+to modify the host inventory file, cd into the cd /etc/ansible/
+
+
+# Simple test the setting by using    "ansible all -m ping" command
+
+
+
+
+
+
+192.168.92.129
+192.168.92.130
+
